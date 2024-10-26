@@ -1,0 +1,20 @@
+http:
+  middlewares:
+    chain-no-auth:
+      chain:
+        middlewares:
+          #- middlewares-traefik-bouncer # leave this out if you are not using CrowdSec
+          - middlewares-rate-limit
+          #- middlewares-https-redirectscheme
+          - middlewares-secure-headers
+          - middlewares-compress
+
+    chain-basic-auth:
+      chain:
+        middlewares:
+          #- middlewares-traefik-bouncer # leave this out if you are not using CrowdSec
+          - middlewares-rate-limit
+          #- middlewares-https-redirectscheme
+          - middlewares-secure-headers
+          - middlewares-basic-auth
+          - middlewares-compress

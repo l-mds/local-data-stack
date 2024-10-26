@@ -1,0 +1,164 @@
+[dependencies]
+python = "3.12"
+pip = ">=24.2"
+
+[environments]
+template = { features = ["template"], solve-group = "template" }
+ci-basics = { features = ["ci-basics"], solve-group = "ci-basics" }
+secops = { features = ["secops"], solve-group = "secops" }
+shared-library = { features = ["shared-library"], solve-group = "default" }
+codelocation-foo = { features = [
+  "codelocation-foo",
+  "dagster-basics",
+  "shared-library",
+], solve-group = "codelocation-foo" }
+codelocation-{{ cookiecutter.project_slug_pixi }} = { features = [
+  "codelocation-{{ cookiecutter.project_slug_pixi }}",
+  "shared-library",
+  "dagster-basics",
+  "shared",
+], solve-group = "codelocation-{{ cookiecutter.project_slug_pixi }}" }
+ci-validation = { features = [
+  "ci-basics",
+  "codelocation-{{ cookiecutter.project_slug_pixi }}",
+  "codelocation-foo",
+  "shared-library",
+  "shared",
+  "dagster-webserver",
+  "dagster-daemon",
+  "dagster-basics",
+
+], solve-group = "default" }
+dagster-webserver = { features = [
+  "dagster-webserver",
+  "dagster-basics",
+], solve-group = "default" }
+dagster-daemon = { features = [
+  "dagster-daemon",
+  "dagster-basics",
+], solve-group = "default" }
+
+[feature.ci-basics.dependencies]
+yamllint = ">=1.35.1,<2"
+taplo = ">=0.9.3,<0.10"
+pytest = ">=8.3.3,<9"
+pytest-mock = ">=3.14.0,<4"
+pytest-cov = ">=5.0.0,<6"
+ruff = ">=0.5.7,<1"
+pyright = "~=1.1.383"
+git = "~=2.47.0"
+
+[feature.ci-basics.pypi-dependencies]
+moto = "~=5.0.14"
+nbqa = "~=1.9.0"
+sqlfluff = "~=3.2.0"
+sqlfluff-templater-dbt = "~=3.2.0"
+
+[feature.dagster-basics.dependencies]
+#grpcio = "*"
+grpcio-tools = "*"
+protobuf = ">=4,<5" # dagster currently only works with protobuf 4
+
+[feature.dagster-basics.pypi-dependencies]
+dagster = ">=1.8.10,<1.9"
+dagster-postgres = ">=0.24.10,<0.25"
+dagster-cloud = ">=1.8.10,<1.9"
+
+[feature.dagster-daemon.pypi-dependencies]
+dagster-docker = ">=0.24.10,<0.25"
+
+[feature.dagster-webserver.pypi-dependencies]
+dagster-webserver = ">=1.8.10,<1.9"
+dagster-docker = ">=0.24.10,<0.25"
+
+[feature.shared-library.dependencies]
+[feature.shared-library.pypi-dependencies]
+
+[feature.shared.dependencies]
+polars = "~=1.9.0"
+pandas = ">=2.2.2,<3"
+duckdb = "~=1.1.1"
+pyarrow = "~=17.0.0"
+pydantic = "~=2.9.2"
+
+[feature.shared.pypi-dependencies]
+shared-library = { path = "./src/shared_library", editable = true }
+
+[feature.codelocation-foo.dependencies]
+[feature.codelocation-foo.pypi-dependencies]
+quickstart_etl = { path = "./src/code_location_foo", editable = true }
+
+[feature.codelocation-{{ cookiecutter.project_slug_pixi }}.dependencies]
+[feature.codelocation-{{ cookiecutter.project_slug_pixi }}.pypi-dependencies]
+dbt-core = ">=1.8.7,<1.9"
+dbt-duckdb = "~=1.8.4"
+dagster-dbt = ">=0.24.10,<0.25"
+dagster-duckdb = ">=0.24.10,<0.25"
+dagster-duckdb-polars = ">=0.24.10,<0.25"
+dagster-duckdb-pandas = ">=0.24.10,<0.25"
+code_location_{{ cookiecutter.project_slug }} = { path = "./src/code_location_{{ cookiecutter.project_slug }}", editable = true }
+
+[feature.template.dependencies]
+cruft = "~=2.15.0"
+
+[feature.template.pypi-dependencies]
+jinja2-ospath = ">=0.3.0,<0.4.0"
+
+[feature.secops.dependencies]
+go-sops = "~=3.9.1"
+age = "~=1.2.0"
+
+[feature.secops.pypi-dependencies]
+
+[project]
+name = "dagster-example"
+version = "1.0.0"
+description = "Dagster Example"
+authors = ["Georg Heiler <georg@@heiler.live>"]
+platforms = ["linux-64", "osx-arm64", "win-64", "linux-aarch64"]
+channels = ["conda-forge"]
+
+[tasks]
+[tasks.fmt]
+cmd = "pixi run -e ci-basics ruff format ./src && ruff check --fix ./src  && nbqa 'ruff format' src/* && yamllint -c yamllintconfig.yaml . && taplo fmt"
+description = "Format python files"
+env = { RUST_LOG = "warn" }
+
+[tasks.fmt-unsafe]
+cmd = "pixi run -e ci-basics nbqa 'ruff format' src/* && ruff format ./src && nbqa ruff --fix --unsafe-fixes ./src/* && ruff check --fix --unsafe-fixes ./src && yamllint -c yamllintconfig.yaml . && taplo fmt"
+description = "Format python files - apply automatic ruff unsafe fixes"
+
+
+[tasks.lint]
+cmd = "ruff check ./src && yamllint -c yamllintconfig.yaml . && taplo check && pyright"
+description = "Validate formatting and type check python files"
+
+[tasks.test]
+cmd = "pytest --ignore=src/{{ cookiecutter.project_slug_pixi }}/code_location_{{ cookiecutter.project_slug_pixi }}_dbt/dbt_packages src"
+description = "Validate formatting and type check python files"
+
+[tasks.tpl-update]
+cmd = "pixi run -e template cruft update"
+description = "Update from template"
+
+[tasks.start-dev]
+cmd = "pixi run -e ci-validation dagster dev"
+cwd = "."
+env = { FOO = "bar" }
+description = "Start dagster webserver in dev mode"
+
+[tasks.cleanup-state]
+cmd = "rm -rf {{ cookiecutter.state_path }}"
+description = "clean state directory"
+
+[tasks.secrets-encrypt]
+cmd = "pixi run -e secops ./scripts/encrypt_secrets.sh"
+description = "encrypt secrets with SOPS and AGE"
+
+[tasks.secrets-decrypt]
+cmd = "pixi run -e secops ./scripts/decrypt_secrets.sh"
+description = "decrypt secrets with SOPS and AGE"
+
+[tasks.clean-local-branches]
+cmd = "pixi run -e ci-basics ./scripts/git_clean_local_branches.sh"
+description = "cleanup local non used branches"

@@ -1,0 +1,29 @@
+flags:
+  send_anonymous_usage_stats: False
+
+code_location_{{ cookiecutter.project_slug }}:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      schema: "{% raw %}{{ env_var('WAREHOUSE_SCHEMA', 'bar_dev') }}{% endraw %}"
+      path: ./analytics_database_dev.duckdb
+      threads: 2
+      extensions:
+        - parquet
+        - httpfs
+        - aws
+      #settings:
+      #  s3_region: us-east-1
+      #secrets:
+      #  - type: s3
+      #    region: us-east-1
+      #    key_id: "{% raw %}{{ env_var('AWS_ACCESS_KEY_ID', 'dummy') }}{% endraw %}"
+      #    secret: "{% raw %}{{ env_var('AWS_SECRET_ACCESS_KEY', 'dummy') }}{% endraw %}"
+
+    prod:
+      type: duckdb
+      schema: "{% raw %}{{ env_var('WAREHOUSE_SCHEMA', 'bar') }}{% endraw %}"
+      path: {{ cookiecutter.state_path }}/analytics/analytics_database_prod.duckdb
+      #external_root: /foo/the/bar
+      threads: 4

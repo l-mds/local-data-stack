@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: my_first_dbt_model
+    description: "A starter dbt model"
+    latest_version: 1
+    config:
+      tags: ['foo', 'bar']
+    columns:
+      - name: id
+        description: '{% raw %}{{ doc("desc_example_id") }}{% endraw %}'
+        data_tests:
+          - unique
+          - not_null
+    versions:
+      - v: 1
+        deprecation_date: 2024-12-01
+
+  - name: my_second_dbt_model
+    description: "A starter dbt model"
+    columns:
+      - name: id
+        description: "The primary key for this table"
+        data_tests:
+          - unique
+          - not_null

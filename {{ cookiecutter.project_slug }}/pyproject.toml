@@ -1,0 +1,55 @@
+[tool.ruff]
+exclude = [
+  ".git",
+  "__pycache__",
+  "docs/source/conf.py",
+  "old",
+  "build",
+  "dist",
+  ".pixi",
+  "src/{{ cookiecutter.project_slug }}/code_location_{{ cookiecutter.project_slug }}_dbt/dbt_packages",
+  "*.ipynb",
+]
+
+line-length = 88
+
+[tool.ruff.lint]
+ignore = ["E501"]
+select = ["F", "E", "W", "C", "B", "I"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 5
+
+[tool.pyright]
+include = [
+  "src/code_location_{{ cookiecutter.project_slug }}",
+  "src/code_location_foo",
+  "src/shared_library",
+]
+exclude = [
+  "src/code_location_{{ cookiecutter.project_slug }}/build",
+  "src/code_location_foo/build",
+  "src/shared_library/build",
+]
+pythonVersion = "3.12"
+venvPath = ".pixi/envs"
+venv = "ci-validation"
+extraPaths = [
+  "src/code_location_{{ cookiecutter.project_slug }}",
+  "src/code_location_foo",
+  "src/shared_library",
+]
+
+reportMissingTypeStubs = false
+reportImportCycles = "error"
+useLibraryCodeForTypes = true
+# TODO become more strict over time
+#typeCheckingMode = "strict"
+typeCheckingMode = "standard"
+#typeCheckingMode = "basic"
+
+
+reportArgumentType = "warning"
+reportCallIssue = "warning"
+reportOptionalMemberAccess = "warning"
+reportOptionalSubscript = "warning"

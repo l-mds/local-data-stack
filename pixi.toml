@@ -1,0 +1,36 @@
+[dependencies]
+python = "3.12"
+pip = ">=24.2"
+
+[environments]
+ci = { features = ["ci-basics"], solve-group = "ci" }
+template = { features = ["template"], solve-group = "template" }
+
+[feature.ci-basics.dependencies]
+yamllint = ">=1.35.1,<2"
+taplo = ">=0.9.3,<0.10"
+
+[feature.template.dependencies]
+cruft = "~=2.15.0"
+cookiecutter = "~=2.6.0"
+
+[feature.template.pypi-dependencies]
+jinja2-ospath = ">=0.3.0,<0.4.0"
+
+[project]
+name = "lmds-template"
+version = "1.0.0"
+description = "Local data stack template"
+authors = ["Georg Heiler <georg.kf.heiler@gmail.com>"]
+platforms = ["linux-64", "osx-arm64", "win-64"]
+channels = ["conda-forge"]
+
+[tasks.fmt]
+cmd = "pixi run -e ci yamllint -c yamllintconfig.yaml . && taplo fmt"
+description = "Format yaml & toml files"
+env = { RUST_LOG = "warn" }
+
+[tasks.tpl-init-cruft]
+cmd = "pixi run -e template cruft create git@github.com:l-mds/local-data-stack.git"
+description = "Initialize template with cruft"
+

@@ -1,0 +1,30 @@
+[sqlfluff]
+# potential performance improvements
+# https://discourse.getdbt.com/t/setting-up-vscode-to-use-with-the-dbt-cli/3291/4
+templater = dbt
+dialect = duckdb
+exclude_rules = L059
+max_line_length = 130
+capitalisation_policy = upper
+
+[sqlfluff:templater:dbt]
+# project_dir = <relative or absolute path to dbt_project directory>
+
+# for now DO NOT run this in CI as no DB instance is available there
+profiles_dir =config
+# profile = conf
+target = prod
+#target = dev
+#target = local
+
+[sqlfluff:templater:jinja]
+apply_dbt_builtins = True
+
+
+[sqlfluff:indentation]
+indented_joins = false
+indented_using_on = true
+template_blocks_indent = false
+
+[sqlfluff:templater]
+unwrap_wrapped_queries = true

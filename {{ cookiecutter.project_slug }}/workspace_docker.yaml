@@ -1,0 +1,10 @@
+---
+load_from:
+  - grpc_server:
+      host: codelocation-{{ cookiecutter.project_slug }}
+      port: 4000
+      location_name: "{{ cookiecutter.project_slug }}"
+  - grpc_server:
+      host: codelocation-foo
+      port: 4000
+      location_name: "foo"

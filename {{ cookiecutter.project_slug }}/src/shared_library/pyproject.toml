@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=72", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shared_library"
+version = "1.0.0"
+description = "Example library"
+authors = [{ name = "{{ cookiecutter.author }}", email = "{{ cookiecutter.author_email }}" }]
+license = { text = "UNLICENSED" }
+dependencies = []
+
+[project.urls]
+repository = "https://github.com/{{ cookiecutter.project_slug }}/{{ cookiecutter.project_slug }}"
+
+[tool.setuptools.packages.find]
+exclude = ["shared_library_tests"]

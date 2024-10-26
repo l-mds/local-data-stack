@@ -1,0 +1,98 @@
+---
+services:
+  proxy:
+    image: traefik:v3.1.5
+    container_name: proxy
+    hostname: proxy
+    environment:
+      - CF_API_EMAIL=$CLOUDFLARE_EMAIL
+      - CF_DNS_API_TOKEN=$CLOUDFLARE_API_KEY
+      - TZ=${TZ}
+    command:
+      #- "--api.insecure=true"
+      #- "--api"
+      #- "--api.dashboard=true"
+      # TODO disable
+      - --log.level=DEBUG
+      - "--providers.docker=true"
+      - --providers.docker.endpoint=unix:///var/run/docker.sock # Use Docker Socket Proxy instead for improved security
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik_net"
+      - "--entrypoints.web.address=:80"
+      #- --accesslog.filepath=/logs/access.log
+      - "--entrypoints.websecure.address=:443"
+      - --entrypoints.websecure.http.tls.options=tls-opts@file
+      # Allow these IPs to set the X-Forwarded-* headers - Cloudflare IPs: https://www.cloudflare.com/ips/
+      - --entrypoints.websecure.forwardedHeaders.trustedIPs=$CLOUDFLARE_IPS,$LOCAL_IPS
+
+      - --providers.file.directory=/rules
+      - --providers.file.watch=true # Only works on top level files in the rules folder
+      #- "--providers.file.filename=/etc/traefik/dynamic_conf.toml"
+      #- "--providers.file.filename=/rules/dynamic_conf.toml"
+      - --certificatesResolvers.dns-cloudflare.acme.email=$CF_API_EMAIL
+      - --certificatesResolvers.dns-cloudflare.acme.storage=/letsencrypt/acme.json
+      - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.provider=cloudflare
+      - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.resolvers=1.1.1.1:53,1.0.0.1:53
+      - --certificatesResolvers.dns-cloudflare.acme.dnsChallenge.delayBeforeCheck=90 # To delay DNS check and reduce LE hitrate
+      - --entryPoints.web.http.redirections.entrypoint.to=websecure
+      - --entryPoints.web.http.redirections.entrypoint.scheme=https
+    ports:
+      - "80:80"
+      - "443:443"
+      #- "8080:8080" # Traefik dashboard
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      #- "./services/proxy/dynamic_conf.toml:/etc/traefik/dynamic_conf.toml"
+      - ./services/proxy/rules:/rules
+      - ./z_state/proxy/logs:/logs
+      - ./z_state/proxy/letsencrypt:/letsencrypt
+      #- ./traefik.yml:/etc/traefik/traefik.yml:ro
+    #labels:
+      # Dashboard
+      # not enabled, not exposed, no security risk
+      #- "traefik.enable=true"
+      #- "traefik.http.routers.traefik.rule=Host(`traefik.${ROOT_DOMAIN}`)"
+      #- "traefik.http.routers.traefik.rule=Host(`traefik.localhost`)"
+      #- "traefik.http.routers.traefik.entrypoints=web"
+      #- "traefik.http.routers.traefik.service=api@internal"
+
+      # Basic Auth for dashboard
+      #- "traefik.http.routers.traefik.middlewares=auth_traefik_dashboard"
+      #- "traefik.http.middlewares.auth_traefik_dashboard.basicauth.users=${APP_USER}:${APP_PASSWORD}"
+      # HTTP-to-HTTPS Redirect
+      #- "traefik.http.routers.http-catchall.entrypoints=http"
+      #- "traefik.http.routers.http-catchall.rule=HostRegexp(`{host:.+}`)"
+      #- "traefik.http.routers.http-catchall.middlewares=redirect-to-https"
+      #- "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+
+    #restart: always
+    networks:
+      - traefik_net
+
+    profiles:
+      - proxy
+      - infrabase
+
+  whoami:
+    # A container that exposes an API to show its IP address
+    image: traefik/whoami
+    labels:
+      - "traefik.enable=true"
+      # only works on localhost - whoami DNS sub entry is not set
+      - "traefik.http.routers.whoami.rule=Host(`whoami.${ROOT_DOMAIN}`)"
+      - "traefik.http.routers.whoami.tls.certresolver=dns-cloudflare"
+      # XOR
+      # noauth
+      - "traefik.http.routers.whoami.middlewares=chain-no-auth@file"
+      # password
+      #-   "traefik.http.middlewares.auth_traefik_dashboard.basicauth.users=${APP_USER}:${APP_PASSWORD}"
+      # - "traefik.http.middlewares.auth_traefik_dashboard.basicauth.users=${APP_USER}:$$apr1$$zIo2lozg$$AN0OEI1XclvWrAA19SVMk."
+    networks:
+      - traefik_net
+    profiles:
+      - proxy
+
+networks:
+  traefik_net:
+    name: traefik_net
+    # external: true in child docker projects

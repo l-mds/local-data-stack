@@ -1,0 +1,17 @@
+{
+    "project_name": "Local data stack",
+    "organization": "myorg",
+    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_') }}",
+    "project_slug_pixi": "{{ cookiecutter.project_name.lower().replace(' ', '-') }}",
+    "author": "Your name",
+    "author_email": "Your@email.com",
+    "cloudflare_api_key": "<<your-secret-key>>",
+    "cloudflare_email": "<<your-e-mail>>",
+    "root_domain": "<<yourdomain.com>>",
+    "time_zone": "Europe/Vienna",
+    "state_path": "{{ '.' | abspath }}/{{ cookiecutter.project_slug }}-z_state",
+
+    "_extensions": [
+    "jinja2_ospath.extensions.OSPathExtension"
+  ]
+  }

@@ -1,0 +1,198 @@
+x-dagster-vars:
+  &default-app-vars
+  WAREHOUSE_DAGSTER_HOSTNAME: ${WAREHOUSE_DAGSTER_HOSTNAME}
+  WAREHOUSE_DAGSTER_DB: ${WAREHOUSE_DAGSTER_DB}
+  WAREHOUSE_DAGSTER_USER: ${WAREHOUSE_DAGSTER_USER}
+  WAREHOUSE_DAGSTER_PASSWORD: ${WAREHOUSE_DAGSTER_PASSWORD}
+  #DAGSTER_DEPLOYMENT: ${DAGSTER_DEPLOYMENT:-integration_test}
+  DAGSTER_DEPLOYMENT: prod
+  #DAGSTER_CLOUD_DEPLOYMENT_NAME: ${DAGSTER_CLOUD_DEPLOYMENT_NAME}
+  #DAGSTER_CLOUD_GIT_URL: ${DAGSTER_CLOUD_GIT_URL}
+  #DAGSTER_CLOUD_GIT_SHA: ${DAGSTER_CLOUD_GIT_SHA}
+  #DAGSTER_CLOUD_GIT_BRANCH: ${DAGSTER_CLOUD_GIT_BRANCH}
+
+x-build:
+  &default-build
+  context: .
+  dockerfile: ./Dockerfile
+
+services:
+  dagster_db:
+    image: postgres:17.0-alpine3.20
+    hostname: dagster_db
+    environment:
+      POSTGRES_DB: ${WAREHOUSE_DAGSTER_DB}
+      POSTGRES_USER: ${WAREHOUSE_DAGSTER_USER}
+      POSTGRES_PASSWORD: ${WAREHOUSE_DAGSTER_PASSWORD}
+    #ports:
+    #  - "5434:5432"
+    restart: always
+    volumes:
+      - {{ cookiecutter.state_path }}/dagster_postgres:/var/lib/postgresql/data
+      #- ./services/orchestration/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
+
+    networks:
+      - dagster_net
+    profiles:
+      - dagster_onprem
+
+  dagster-webserver:
+    build:
+      <<: *default-build
+      target: dagster-webserver
+    image: {{ cookiecutter.project_slug }}/dagster-webserver
+    container_name: dagster-webserver
+    restart: always
+    environment:
+      <<: *default-app-vars
+    ports:
+      - "3000:3000"
+    depends_on:
+      dagster_db:
+        condition: service_healthy
+      dagster-daemon:
+        condition: service_started
+      codelocation-foo:
+        condition: service_started
+      codelocation-{{ cookiecutter.project_slug }}:
+        condition: service_started
+    #platform: linux/amd64
+    profiles:
+      - dagster_onprem
+    volumes:
+    # Make docker client accessible so we can terminate containers from dagster-webserver
+      - /var/run/docker.sock:/var/run/docker.sock
+
+      - {{ cookiecutter.state_path }}/dagster_logs:/opt/dagster/dagster_home/compute_logs
+      - {{ cookiecutter.state_path }}/dagster_local_artifact_storage:/opt/dagster/local_artifact_storage
+    #command: bash
+    #stdin_open: true # docker run -i
+    #tty: true        # docker run -t
+    networks:
+      - dagster_net
+      #- traefik_net
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.orchestration.rule=Host(`orchestration.${ROOT_DOMAIN}`)"
+    #   - "traefik.http.routers.orchestration.entrypoints=websecure"
+    #   - "traefik.http.routers.orchestration.tls=true"
+    #   - "traefik.http.routers.orchestration.service=orchestration"
+    #   - "traefik.http.services.orchestration.loadbalancer.server.port=3000"
+    # XOR for auth
+    # no auth
+    #  - "traefik.http.routers.orchestration.middlewares=chain-no-auth@file"
+    # basic auth
+    #   - "traefik.http.routers.orchestration.middlewares=orchestration-auth,chain-no-auth@file"
+    #   - "traefik.http.routers.orchestration.middlewares=orchestration-auth"
+    #   - "traefik.http.middlewares.orchestration-auth.basicauth.users=${ORCHESTRATION_USER}:${ORCHESTRATION_PASSWORD}"
+
+
+  # This service runs the dagster-daemon process, which is responsible for taking runs
+  # off of the queue and launching them, as well as creating runs from schedules or sensors.
+  dagster-daemon:
+    build:
+      <<: *default-build
+      target: dagster-daemon
+    image: {{ cookiecutter.project_slug }}/dagster-daemon
+
+    restart: always
+    #command: bash
+    #stdin_open: true # docker run -i
+    #tty: true        # docker run -t
+    environment:
+      <<: *default-app-vars
+    depends_on:
+      dagster_db:
+        condition: service_healthy
+      codelocation-foo:
+        condition: service_started
+      codelocation-{{ cookiecutter.project_slug }}:
+        condition: service_started
+    #command: bash
+    #stdin_open: true # docker run -i
+    #tty: true        # docker run -t
+    #platform: linux/amd64
+    profiles:
+      - dagster_onprem
+    volumes:
+    # Make docker client accessible so we can launch containers using host docker
+      - /var/run/docker.sock:/var/run/docker.sock
+      - {{ cookiecutter.state_path }}/dagster_logs:/opt/dagster/dagster_home/compute_logs
+      - {{ cookiecutter.state_path }}/dagster_local_artifact_storage:/opt/dagster/local_artifact_storage
+    networks:
+      - dagster_net
+
+#####################################################
+# workspaces
+#####################################################
+# workspace
+  codelocation-foo:
+    build:
+      <<: *default-build
+      target: codelocation-foo
+    image: {{ cookiecutter.project_slug }}/codelocation-foo
+    #container_name: codelocation-foo
+    #restart: always
+    environment:
+      <<: *default-app-vars
+      DAGSTER_CURRENT_IMAGE: {{ cookiecutter.project_slug }}/codelocation-foo:latest
+    volumes:
+      #- .:/opt/dagster/dagster_home/src
+      #- ./lookup_datasets:/opt/dagster/dagster_home/src/lookup_datasets
+      # for PROD container map PROD data here
+      ## linux
+      #- /home/heiler/development/projects/{{ cookiecutter.project_slug }}/{{ cookiecutter.project_slug }}/z_state/dagster_logs:/opt/dagster/dagster_home/compute_logs
+      #- /home/heiler/development/projects/{{ cookiecutter.project_slug }}/{{ cookiecutter.project_slug }}/z_state/dagster_local_artifact_storage:/opt/dagster/local_artifact_storage
+      ## mac
+      - {{ cookiecutter.state_path }}/dagster_logs:/opt/dagster/dagster_home/compute_logs
+      - {{ cookiecutter.state_path }}/dagster_local_artifact_storage:/opt/dagster/local_artifact_storage
+    #platform: linux/amd64
+    profiles:
+      - dagster_onprem
+    networks:
+      - dagster_net
+      # - orchestration_network
+      #- research_net
+#####################################################
+# code location {{ cookiecutter.project_slug }}
+  codelocation-{{ cookiecutter.project_slug }}:
+    build:
+      <<: *default-build
+      target: codelocation-{{ cookiecutter.project_slug_pixi }}
+    image: {{ cookiecutter.project_slug }}/codelocation-{{ cookiecutter.project_slug }}
+    #restart: always
+    environment:
+      <<: *default-app-vars
+      DAGSTER_CURRENT_IMAGE: {{ cookiecutter.project_slug }}/codelocation-{{ cookiecutter.project_slug }}:latest
+    volumes:
+      # yamllint disable
+      #- .:/opt/dagster/dagster_home/src
+      #- ./lookup_datasets:/opt/dagster/dagster_home/src/lookup_datasets
+      # for PROD container map PROD data here
+
+      - {{ cookiecutter.state_path }}/analytics:{{ cookiecutter.state_path }}/analytics
+      - {{ cookiecutter.state_path }}/dagster_logs:/opt/dagster/dagster_home/compute_logs
+      - {{ cookiecutter.state_path }}/dagster_local_artifact_storage:/opt/dagster/local_artifact_storage
+      # yamllint enable
+
+    #platform: linux/amd64
+    profiles:
+      - dagster_onprem
+    networks:
+      - dagster_net
+      # - orchestration_network
+      #- research_net
+
+
+networks:
+  dagster_net:
+    name: dagster_net
+  #traefik_net:
+  #  name: traefik_net
+  #  external: true

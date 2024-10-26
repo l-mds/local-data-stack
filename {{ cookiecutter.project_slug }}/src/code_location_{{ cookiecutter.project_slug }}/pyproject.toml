@@ -1,0 +1,26 @@
+[tool.dagster]
+module_name = "code_location_{{ cookiecutter.project_slug }}"
+
+[tool.isort]
+profile = "black"
+
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "code_location_{{ cookiecutter.project_slug }}"
+version = "1.0.0"
+description = "A sample code location with some python and dbt assets"
+authors = [{ name = "{{ cookiecutter.author }}", email = "{{ cookiecutter.author_email }}" }]
+license = { text = "UNLICENSED" }
+dependencies = ["dagster>=1.8.10,<1.9"]
+
+[project.optional-dependencies]
+dev = ["dagster-webserver>=1.8.10,<1.9", "pytest"]
+
+[project.urls]
+repository = "https://github.com/{{ cookiecutter.organization }}/{{ cookiecutter.project_slug }}"
+
+[tool.setuptools.packages.find]
+exclude = ["code_location_{{ cookiecutter.project_slug }}_tests"]

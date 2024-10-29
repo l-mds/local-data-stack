@@ -3,6 +3,11 @@
 tpl-update:
 	pixi run tpl-update
 
+.PHONY: notebook
+## Start jupyter lab
+notebook:
+	pixi run notebook
+
 .PHONY: start-dev
 ## Start dagster webserver
 start-dev:

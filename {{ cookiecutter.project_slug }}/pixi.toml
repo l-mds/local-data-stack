@@ -6,7 +6,6 @@ pip = ">=24.2"
 template = { features = ["template"], solve-group = "template" }
 ci-basics = { features = ["ci-basics"], solve-group = "ci-basics" }
 secops = { features = ["secops"], solve-group = "secops" }
-shared-library = { features = ["shared-library"], solve-group = "default" }
 codelocation-foo = { features = [
   "codelocation-foo",
   "dagster-basics",
@@ -23,6 +22,19 @@ ci-validation = { features = [
   "codelocation-{{ cookiecutter.project_slug_pixi }}",
   "codelocation-foo",
   "shared-library",
+  "shared",
+  "dagster-webserver",
+  "notebookdev",
+  "dagster-daemon",
+  "dagster-basics",
+
+], solve-group = "default" }
+dev = { features = [
+  "ci-basics",
+  "codelocation-{{ cookiecutter.project_slug_pixi }}",
+  "codelocation-foo",
+  "shared-library",
+  "notebookdev",
   "shared",
   "dagster-webserver",
   "dagster-daemon",
@@ -54,6 +66,11 @@ nbqa = "~=1.9.0"
 sqlfluff = "~=3.2.0"
 sqlfluff-templater-dbt = "~=3.2.0"
 
+[feature.notebookdev.pypi-dependencies]
+jupyterlab = "~=4.2.5"
+jupyterlab-git = ">=0.50.1,<0.60"
+ipywidgets = "~=8.1.5"
+
 [feature.dagster-basics.dependencies]
 #grpcio = "*"
 grpcio-tools = "*"
@@ -75,7 +92,7 @@ dagster-docker = ">=0.24.10,<0.25"
 [feature.shared-library.pypi-dependencies]
 
 [feature.shared.dependencies]
-polars = "~=1.9.0"
+polars = ">=1.11.0,<2"
 pandas = ">=2.2.2,<3"
 duckdb = "~=1.1.1"
 pyarrow = "~=17.0.0"
@@ -119,6 +136,11 @@ platforms = ["linux-64", "osx-arm64", "win-64", "linux-aarch64"]
 channels = ["conda-forge"]
 
 [tasks]
+
+[tasks.notebook]
+cmd = "pixi run -e dev jupyter lab"
+description = "Start jupyter notebook"
+
 [tasks.fmt]
 cmd = "pixi run -e ci-basics ruff format ./src && ruff check --fix ./src  && nbqa 'ruff format' src/* && yamllint -c yamllintconfig.yaml . && taplo fmt"
 description = "Format python files"

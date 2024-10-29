@@ -3,7 +3,7 @@
 - dagster, dbt, duckdb
 - pixi
 - docker
-- pyright, taplo, pytest
+- ruff, pyright, taplo, pytest
 - cruft
 
 

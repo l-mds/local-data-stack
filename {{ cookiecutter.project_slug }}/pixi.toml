@@ -72,21 +72,21 @@ jupyterlab-git = ">=0.50.1,<0.60"
 ipywidgets = "~=8.1.5"
 
 [feature.dagster-basics.dependencies]
-#grpcio = "*"
-grpcio-tools = "*"
-protobuf = ">=4,<5" # dagster currently only works with protobuf 4
+# grpcio = "*"
+# grpcio-tools = "*"
+# protobuf = ">=4,<5" # dagster currently only works with protobuf 4
 
 [feature.dagster-basics.pypi-dependencies]
-dagster = ">=1.8.10,<1.9"
-dagster-postgres = ">=0.24.10,<0.25"
-dagster-cloud = ">=1.8.10,<1.9"
+dagster = ">=1.9.0,<1.10"
+dagster-postgres = ">=0.25,<0.26"
+dagster-cloud = ">=1.9.0,<1.10"
 
 [feature.dagster-daemon.pypi-dependencies]
-dagster-docker = ">=0.24.10,<0.25"
+dagster-docker = ">=0.25,<0.26"
 
 [feature.dagster-webserver.pypi-dependencies]
-dagster-webserver = ">=1.8.10,<1.9"
-dagster-docker = ">=0.24.10,<0.25"
+dagster-webserver = ">=1.9.0,<1.10"
+dagster-docker = ">=0.25,<0.26"
 
 [feature.shared-library.dependencies]
 [feature.shared-library.pypi-dependencies]
@@ -109,10 +109,10 @@ quickstart_etl = { path = "./src/code_location_foo", editable = true }
 [feature.codelocation-{{ cookiecutter.project_slug_pixi }}.pypi-dependencies]
 dbt-core = ">=1.8.7,<1.9"
 dbt-duckdb = "~=1.8.4"
-dagster-dbt = ">=0.24.10,<0.25"
-dagster-duckdb = ">=0.24.10,<0.25"
-dagster-duckdb-polars = ">=0.24.10,<0.25"
-dagster-duckdb-pandas = ">=0.24.10,<0.25"
+dagster-dbt = ">=0.25,<0.26"
+dagster-duckdb = ">=0.25,<0.26"
+dagster-duckdb-polars = ">=0.25,<0.26"
+dagster-duckdb-pandas = ">=0.25,<0.26"
 code_location_{{ cookiecutter.project_slug }} = { path = "./src/code_location_{{ cookiecutter.project_slug }}", editable = true }
 
 [feature.template.dependencies]

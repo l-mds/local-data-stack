@@ -20,7 +20,7 @@ The idea of slow data refers to:
 - shipping real busines value fast
 - scaling as needed via partitions and a scalable resource provider
 
-![Featured](images/featured.png)
+![Featured](img/featured.png)
 
 The template directly can be deployed via docker-compose.
 With only minimal adaptations you can instead deploy to kubernetes in any cloud provider.

@@ -61,6 +61,9 @@ git commit -m "set dependencies"
 
 git commit -m "reformatting"
 pixi run fmt
+
+# start the data stack
+pixi run start-dev
 ```
 
 Post install:

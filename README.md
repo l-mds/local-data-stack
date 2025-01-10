@@ -25,10 +25,16 @@ The idea of slow data refers to:
 The template directly can be deployed via docker-compose.
 With only minimal adaptations you can instead deploy to kubernetes in any cloud provider.
 
+Additionally included for secure handling of secrets:
+
+- sops
+- age
+
 ## usage
 
 Prerequisites: 
 
+- git
 - an installation of cruft `pip install cruft jinja2-ospath`
 - an installation of pixi https://pixi.sh/latest/#installation `curl -fsSL https://pixi.sh/install.sh | bash`
 - text editor of choice such as vscode
@@ -36,10 +42,14 @@ Prerequisites:
 
 
 ```bash
+curl -fsSL https://pixi.sh/install.sh | bash
+git clone https://github.com/l-mds/local-data-stack.git
+cd local-data-stack
 pixi run tpl-init-cruft
 
 # alternatively:
-cruft create cruft create git@github.com:l-mds/local-data-stack.git
+pip install cruft jinja2-ospath
+cruft create git@github.com:l-mds/local-data-stack.git
 
 cd <<your project name>>
 git init

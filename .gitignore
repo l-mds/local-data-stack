@@ -1,4 +1,3 @@
 .pixi/envs/
+.pixi/solve-group-envs/
 local_data_stack
-{{ cookiecutter.project_slug }}/.pixi/solve-group-envs/
-{{ cookiecutter.project_slug }}/.pixi/envs/

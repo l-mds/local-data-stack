@@ -64,52 +64,49 @@ dagster-daemon = { features = [
 [tool.pixi.feature.ci-basics.dependencies]
 yamllint = ">=1.35.1,<2"
 taplo = ">=0.9.3,<0.10"
-pytest = ">=8.3.3,<9"
+pytest = ">=8.3.4,<9"
 pytest-mock = ">=3.14.0,<4"
 pytest-cov = "~=6.0.0"
-ruff = ">=0.7.2,<1"
-pyright = "~=1.1.383"
-git = "~=2.47.0"
+ruff = ">=0.9.1,<1"
+pyright = "~=1.1.391"
+git = "~=2.47.1"
 
 [tool.pixi.feature.ci-basics.pypi-dependencies]
-moto = "~=5.0.14"
+moto = "~=5.0.26"
 nbqa = "~=1.9.0"
-sqlfluff = "~=3.2.0"
-sqlfluff-templater-dbt = "~=3.2.0"
+sqlfluff = "~=3.3.0"
+sqlfluff-templater-dbt = "~=3.3.0"
 
 [tool.pixi.feature.notebookdev.pypi-dependencies]
-jupyterlab = "~=4.2.5"
-jupyterlab-git = ">=0.50.1,<0.60"
+jupyterlab = "~=4.3.4"
+jupyterlab-git = ">=0.50.2,<0.60"
 ipywidgets = "~=8.1.5"
 
 [tool.pixi.feature.dagster-basics.dependencies]
-# grpcio = "*"
-# grpcio-tools = "*"
-# protobuf = ">=4,<5" # dagster currently only works with protobuf 4
 
 [tool.pixi.feature.dagster-basics.pypi-dependencies]
-dagster = ">=1.9.0,<1.10"
-dagster-postgres = ">=0.25,<0.26"
-dagster-cloud = ">=1.9.0,<1.10"
+dagster = ">=1.9.8,<1.10"
+dagster-postgres = ">=0.25.8,<0.26"
+dagster-cloud = ">=1.9.8,<1.10"
 
 [tool.pixi.feature.dagster-daemon.pypi-dependencies]
-dagster-docker = ">=0.25,<0.26"
+dagster-docker = ">=0.25.8,<0.26"
 
 [tool.pixi.feature.dagster-webserver.pypi-dependencies]
-dagster-webserver = ">=1.9.0,<1.10"
-dagster-docker = ">=0.25,<0.26"
+dagster-webserver = ">=1.9.8,<1.10"
+dagster-docker = ">=0.25.8,<0.26"
 
 [tool.pixi.feature.shared-library.dependencies]
 [tool.pixi.feature.shared-library.pypi-dependencies]
 
 [tool.pixi.feature.shared.dependencies]
-polars = ">=1.12.0,<2"
-pandas = ">=2.2.2,<3"
-duckdb = "~=1.1.1"
-pyarrow = "~=18.0.0"
-pydantic = "~=2.9.2"
+pandas = ">=2.2.3,<3"
+duckdb = "~=1.1.3"
+pyarrow = "~=18.1.0"
+pydantic = "~=2.10.5"
 
 [tool.pixi.feature.shared.pypi-dependencies]
+polars = ">=1.19.0,<2"
 shared-library = { path = "./src/shared_library", editable = true }
 
 [tool.pixi.feature.codelocation-foo.dependencies]
@@ -118,23 +115,23 @@ quickstart_etl = { path = "./src/code_location_foo", editable = true }
 
 [tool.pixi.feature.codelocation-{{ cookiecutter.project_slug_pixi }}.dependencies]
 [tool.pixi.feature.codelocation-{{ cookiecutter.project_slug_pixi }}.pypi-dependencies]
-dbt-core = ">=1.8.7,<1.9"
+dbt-core = ">=1.8.9,<1.9"
 dbt-duckdb = "~=1.8.4"
-dagster-dbt = ">=0.25,<0.26"
-dagster-duckdb = ">=0.25,<0.26"
-dagster-duckdb-polars = ">=0.25,<0.26"
-dagster-duckdb-pandas = ">=0.25,<0.26"
+dagster-dbt = ">=0.25.8,<0.26"
+dagster-duckdb = ">=0.25.8,<0.26"
+dagster-duckdb-polars = ">=0.25.8,<0.26"
+dagster-duckdb-pandas = ">=0.25.8,<0.26"
 code_location_{{ cookiecutter.project_slug }} = { path = "./src/code_location_{{ cookiecutter.project_slug }}", editable = true }
 
 [tool.pixi.feature.template.dependencies]
-cruft = "~=2.15.0"
+cruft = "~=2.16.0"
 
 [tool.pixi.feature.template.pypi-dependencies]
 jinja2-ospath = ">=0.3.0,<0.4.0"
 
 [tool.pixi.feature.secops.dependencies]
-go-sops = "~=3.9.1"
-age = "~=1.2.0"
+go-sops = "~=3.9.2"
+age = "~=1.2.1"
 
 [tool.pixi.feature.secops.pypi-dependencies]
 

@@ -22,7 +22,7 @@ yamllint = ">=1.35.1,<2"
 taplo = ">=0.9.3,<0.10"
 
 [tool.pixi.feature.template.dependencies]
-cruft = "~=2.15.0"
+cruft = "~=2.16.0"
 cookiecutter = "~=2.6.0"
 
 [tool.pixi.feature.template.pypi-dependencies]

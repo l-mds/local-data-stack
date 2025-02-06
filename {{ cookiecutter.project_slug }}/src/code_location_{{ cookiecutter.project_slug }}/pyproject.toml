@@ -14,10 +14,10 @@ version = "1.0.0"
 description = "A sample code location with some python and dbt assets"
 authors = [{ name = "{{ cookiecutter.author }}", email = "{{ cookiecutter.author_email }}" }]
 license = { text = "UNLICENSED" }
-dependencies = ["dagster>=1.9.8,<1.10"]
+dependencies = ["dagster>=1.9.11,<1.10"]
 
 [project.optional-dependencies]
-dev = ["dagster-webserver>=1.9.8,<1.10", "pytest"]
+dev = ["dagster-webserver>=1.9.11,<1.10", "pytest"]
 
 [project.urls]
 repository = "https://github.com/{{ cookiecutter.organization }}/{{ cookiecutter.project_slug }}"

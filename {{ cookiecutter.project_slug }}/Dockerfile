@@ -7,7 +7,7 @@ FROM builder_base AS build
 ENV DAGSTER_HOME=/opt/dagster/dagster_home/
 WORKDIR /opt/dagster/dagster_home/
 WORKDIR /app
-COPY pixi.toml .
+COPY pyproject.toml .
 COPY pixi.lock .
 
 RUN pixi install --frozen -e dagster-webserver
@@ -107,7 +107,7 @@ COPY yamllintconfig.yaml .
 COPY pyproject.toml .
 COPY taplo.toml .
 
-COPY pixi.toml .
+COPY pyproject.toml .
 COPY pixi.lock .
 COPY src src
 RUN pixi install -e ci-validation --locked

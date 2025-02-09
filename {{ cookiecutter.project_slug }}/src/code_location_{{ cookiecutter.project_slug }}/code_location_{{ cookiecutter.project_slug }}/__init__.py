@@ -4,6 +4,7 @@ from dagster import (
     AutomationCondition,
     Definitions,
     link_code_references_to_git,
+    load_asset_checks_from_package_module,
     load_assets_from_package_module,
     with_source_code_references,
 )
@@ -15,17 +16,16 @@ from code_location_{{ cookiecutter.project_slug }} import assets
 from .resources import get_resources_for_deployment
 
 resource_defs = get_resources_for_deployment()
-all_assets = load_assets_from_package_module(
-    assets,
-    automation_condition=AutomationCondition.eager(),
-)
-
-# TODO not flexible
 all_assets = with_source_code_references(
     [
-        *load_assets_from_package_module(assets),
+        *load_assets_from_package_module(
+            assets,
+            automation_condition=AutomationCondition.eager(),
+        ),
     ]
 )
+all_asset_checks = [*load_asset_checks_from_package_module(assets)]
+
 all_assets = link_code_references_to_git(
     assets_defs=all_assets,
     git_url="https://github.com/{{ cookiecutter.organization }}/{{ cookiecutter.project_slug }}/",
@@ -53,6 +53,7 @@ all_assets = link_code_references_to_git(
 
 defs = Definitions(
     assets=all_assets,
+    asset_checks=all_asset_checks,
     schedules=[],
     sensors=[],
     jobs=[],

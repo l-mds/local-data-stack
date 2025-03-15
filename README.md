@@ -49,7 +49,7 @@ pixi run tpl-init-cruft
 
 # alternatively:
 pip install cruft jinja2-ospath
-cruft create git@github.com:l-mds/local-data-stack.git
+cruft create https://github.com/l-mds/local-data-stack.git
 
 cd <<your project name>>
 git init

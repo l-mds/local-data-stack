@@ -34,6 +34,6 @@ description = "Format yaml & toml files"
 env = { RUST_LOG = "warn" }
 
 [tool.pixi.tasks.tpl-init-cruft]
-cmd = "pixi run -e template cruft create git@github.com:l-mds/local-data-stack.git"
+cmd = "pixi run -e template cruft create https://github.com/l-mds/local-data-stack.git"
 description = "Initialize template with cruft"
 

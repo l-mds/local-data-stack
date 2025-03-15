@@ -31,7 +31,7 @@ To validate dependencies (from the branch/PR) execute:
 
 ```bash
 # create from the branch
-cruft create --checkout <<new-branch>> git@github.com:l-mds/local-data-stack.git
+cruft create --checkout <<new-branch>> https://github.com/l-mds/local-data-stack.git
 
 
 # update from the branch

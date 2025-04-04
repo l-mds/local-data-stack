@@ -62,6 +62,11 @@ git commit -m "set dependencies"
 git commit -m "reformatting"
 pixi run fmt
 
+# set dagster home to some directory
+# your logs and run results will be persistet there
+mkdir /path/to/my_dagster_home
+export DAGSTER_HOME=/path/to/my_dagster_home
+
 # start the data stack
 pixi run start-dev
 ```

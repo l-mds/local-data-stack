@@ -105,7 +105,6 @@ ENTRYPOINT [ "/app/entrypoint.sh" ]
 
 COPY yamllintconfig.yaml .
 COPY pyproject.toml .
-COPY taplo.toml .
 
 COPY pyproject.toml .
 COPY pixi.lock .

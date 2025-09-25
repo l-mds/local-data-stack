@@ -10,7 +10,7 @@ http:
     middlewares-rate-limit:
       rateLimit:
         average: 100
-        burst: 50
+        burst: 500
 
     middlewares-https-redirectscheme:
       redirectScheme:

@@ -85,16 +85,16 @@ ipywidgets = "~=8.1.5"
 [tool.pixi.feature.dagster-basics.dependencies]
 
 [tool.pixi.feature.dagster-basics.pypi-dependencies]
-dagster = ">=1.9.11,<1.10"
-dagster-postgres = ">=0.25.11,<0.26"
-dagster-cloud = ">=1.9.11,<1.10"
+dagster = ">=1.11.11,<1.12"
+dagster-postgres = ">=0.27.11,<0.28"
+dagster-cloud = ">=1.11.11,<1.12"
 
 [tool.pixi.feature.dagster-daemon.pypi-dependencies]
-dagster-docker = ">=0.25.11,<0.26"
+dagster-docker = ">=0.27.11,<0.28"
 
 [tool.pixi.feature.dagster-webserver.pypi-dependencies]
-dagster-webserver = ">=1.9.11,<1.10"
-dagster-docker = ">=0.25.11,<0.26"
+dagster-webserver = ">=1.11.11,<1.12"
+dagster-docker = ">=0.27.11,<0.28"
 
 [tool.pixi.feature.shared-library.dependencies]
 [tool.pixi.feature.shared-library.pypi-dependencies]
@@ -117,10 +117,10 @@ quickstart_etl = { path = "./src/code_location_foo", editable = true }
 [tool.pixi.feature.codelocation-{{ cookiecutter.project_slug_pixi }}.pypi-dependencies]
 dbt-core = "~=1.9.2"
 dbt-duckdb = "~=1.9.1"
-dagster-dbt = ">=0.25.11,<0.26"
-dagster-duckdb = ">=0.25.11,<0.26"
-dagster-duckdb-polars = ">=0.25.11,<0.26"
-dagster-duckdb-pandas = ">=0.25.11,<0.26"
+dagster-dbt = ">=0.27.11,<0.28"
+dagster-duckdb = ">=0.27.11,<0.28"
+dagster-duckdb-polars = ">=0.27.11,<0.28"
+dagster-duckdb-pandas = ">=0.27.11,<0.28"
 code_location_{{ cookiecutter.project_slug }} = { path = "./src/code_location_{{ cookiecutter.project_slug }}", editable = true }
 
 [tool.pixi.feature.template.dependencies]

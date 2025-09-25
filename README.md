@@ -30,6 +30,8 @@ Additionally included for secure handling of secrets:
 - sops
 - age
 
+![](img/ducking-the-lake.png)
+
 ## usage
 
 Prerequisites: 

@@ -1,0 +1,102 @@
+---
+telemetry:
+  enabled: false
+
+scheduler:
+  module: dagster.core.scheduler
+  class: DagsterDaemonScheduler
+
+run_coordinator:
+  module: dagster.core.run_coordinator
+  class: QueuedRunCoordinator
+  config:
+    max_concurrent_runs: 7
+    tag_concurrency_limits:
+      - key: "stateful_scd2"
+        value: "1"
+        limit: 1
+
+run_launcher:
+  module: dagster_docker
+  class: DockerRunLauncher
+  config:
+    env_vars:
+      - WAREHOUSE_DAGSTER_USER
+      - WAREHOUSE_DAGSTER_PASSWORD
+      - WAREHOUSE_DAGSTER_DB
+      - WAREHOUSE_DAGSTER_HOSTNAME
+      - DAGSTER_DEPLOYMENT
+      #- DAGSTER_CLOUD_DEPLOYMENT_NAME=techexploration
+      #- DAGSTER_CLOUD_GIT_URL=https://github.com/<<org>>/<<reopo>>
+      #- DAGSTER_CLOUD_GIT_SHA=<<sha>>
+      #- DAGSTER_CLOUD_GIT_BRANCH=main
+    networks:
+      - dagster_net
+    container_kwargs:
+      auto_remove: true
+      volumes:
+      # yamllint disable
+      # for caching dynamically resolved spark packages
+      #- /Users/<<youruser>>/.ivy2:/root/.ivy2
+
+      - {{ cookiecutter.state_path }}/analytics:/{{ cookiecutter.state_path }}/analytics
+      - {{ cookiecutter.state_path }}/dagster_logs:/opt/dagster/dagster_home/compute_logs
+      - {{ cookiecutter.state_path }}/dagster_local_artifact_storage:/opt/dagster/local_artifact_storage
+      # yamllint enable
+
+run_storage:
+  module: dagster_postgres.run_storage
+  class: PostgresRunStorage
+  config:
+    postgres_db:
+      hostname:
+        env: WAREHOUSE_DAGSTER_HOSTNAME
+      username:
+        env: WAREHOUSE_DAGSTER_USER
+      password:
+        env: WAREHOUSE_DAGSTER_PASSWORD
+      db_name:
+        env: WAREHOUSE_DAGSTER_DB
+      port: 5432
+
+schedule_storage:
+  module: dagster_postgres.schedule_storage
+  class: PostgresScheduleStorage
+  config:
+    postgres_db:
+      hostname:
+        env: WAREHOUSE_DAGSTER_HOSTNAME
+      username:
+        env: WAREHOUSE_DAGSTER_USER
+      password:
+        env: WAREHOUSE_DAGSTER_PASSWORD
+      db_name:
+        env: WAREHOUSE_DAGSTER_DB
+      port: 5432
+
+event_log_storage:
+  module: dagster_postgres.event_log
+  class: PostgresEventLogStorage
+  config:
+    postgres_db:
+      hostname:
+        env: WAREHOUSE_DAGSTER_HOSTNAME
+      username:
+        env: WAREHOUSE_DAGSTER_USER
+      password:
+        env: WAREHOUSE_DAGSTER_PASSWORD
+      db_name:
+        env: WAREHOUSE_DAGSTER_DB
+      port: 5432
+
+compute_logs:
+  module: dagster.core.storage.local_compute_log_manager
+  class: LocalComputeLogManager
+  config:
+    base_dir: /opt/dagster/dagster_home/compute_logs
+
+local_artifact_storage:
+  module: dagster.core.storage.root
+  class: LocalArtifactStorage
+  config:
+    base_dir: "/opt/dagster/local_artifact_storage"

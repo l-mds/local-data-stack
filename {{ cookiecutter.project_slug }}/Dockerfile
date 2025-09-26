@@ -1,7 +1,5 @@
-# syntax=docker/dockerfile:1.10.0
-
 # for CUDA support ensure docker is nvidia-docker enabled!
-FROM ghcr.io/prefix-dev/pixi:0.41.1-bookworm AS builder_base
+FROM ghcr.io/prefix-dev/pixi:0.55.0-bookworm AS builder_base
 
 FROM builder_base AS build
 ENV DAGSTER_HOME=/opt/dagster/dagster_home/

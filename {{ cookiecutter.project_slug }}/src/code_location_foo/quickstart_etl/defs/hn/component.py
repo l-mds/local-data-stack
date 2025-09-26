@@ -18,7 +18,7 @@ def my_asset():
 
 class HnComponent(dg.Component, dg.Model, dg.Resolvable):
     def build_defs(self, context: dg.ComponentLoadContext) -> dg.Definitions:
-        return dg.Definitions(schedules=[daily_refresh_schedule], assets=[my_asset],)
+        return dg.Definitions()
 
 
 @dg.component_instance

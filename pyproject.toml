@@ -37,7 +37,10 @@ env = { RUST_LOG = "warn" }
 cmd = "pixi run -e template cruft create https://github.com/l-mds/local-data-stack.git"
 description = "Initialize template with cruft"
 
-
 [tool.pixi.tasks.render-dev]
 cmd = "pixi run --frozen -e template cruft create . --no-input --overwrite-if-exists --output-dir rendered-template && ./scripts/handle-dev-secrets.sh"
 description = "locally render a development instance of the template"
+
+[tool.pixi.tasks.render-dev-no-secrets]
+cmd = "pixi run --frozen -e template cruft create . --no-input --overwrite-if-exists --output-dir rendered-template"
+description = "locally render a development instance of the template; no secrets needed (for CI)"

@@ -1,25 +1,20 @@
 from pathlib import Path
 
 import dagster as dg
-from .resources import get_resources_for_deployment
 
 @dg.definitions
 def defs():
     root_dir = __file__
-    resource_defs = get_resources_for_deployment()
     base = dg.load_from_defs_folder(path_within_project=Path(root_dir).parent.parent)
     assets_with_eager = dg.with_attributes(
-    base,
-    automation_condition=dg.AutomationCondition.eager()
-)
-    merged_defs = dg.Definitions.merge(
-        assets_with_eager, dg.Definitions(resources=resource_defs)
+        base,
+        automation_condition=dg.AutomationCondition.eager()
     )
 
-    materializable = [a for a in merged_defs.assets if isinstance(a, dg.AssetsDefinition)]  # type: ignore
+    materializable = [a for a in assets_with_eager.assets if isinstance(a, dg.AssetsDefinition)]  # type: ignore
     passthrough = [
         a
-        for a in merged_defs.assets  # type: ignore
+        for a in assets_with_eager.assets  # type: ignore
         if not isinstance(a, dg.AssetsDefinition)
     ]  # SourceAsset
 

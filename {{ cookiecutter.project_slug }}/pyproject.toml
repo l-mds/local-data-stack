@@ -3,7 +3,7 @@ name = "{{ cookiecutter.project_slug }}"
 version = "1.0.0"
 description = "{{ cookiecutter.project_name }}"
 authors = [{ name = "{{ cookiecutter.author }}", email = "{{ cookiecutter.author_email }}" }]
-requires-python = "== 3.12"
+requires-python = ">=3.12,<3.13"
 
 [tool.pixi.project]
 platforms = ["linux-64", "osx-arm64", "win-64", "linux-aarch64"]
@@ -38,6 +38,7 @@ ci-validation = { features = [
   "notebookdev",
   "dagster-daemon",
   "dagster-basics",
+  "dagster-scaffolding",
 
 ], solve-group = "default" }
 dev = { features = [
@@ -50,6 +51,7 @@ dev = { features = [
   "dagster-webserver",
   "dagster-daemon",
   "dagster-basics",
+  "dagster-scaffolding",
 
 ], solve-group = "default" }
 dagster-webserver = { features = [
@@ -60,6 +62,14 @@ dagster-daemon = { features = [
   "dagster-daemon",
   "dagster-basics",
 ], solve-group = "default" }
+
+[tool.pixi.feature.dagster-scaffolding.dependencies]
+yarn = "~=4.9.2"
+
+[tool.pixi.feature.dagster-scaffolding.pypi-dependencies]
+dagster-dg-cli = ">=1.11.10,<1.12"
+create-dagster = ">=1.11.10,<1.12"
+
 
 [tool.pixi.feature.ci-basics.dependencies]
 yamllint = ">=1.35.1,<2"

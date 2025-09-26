@@ -6,9 +6,6 @@ build-backend = "setuptools.build_meta"
 module_name = "quickstart_etl.definitions"
 code_location_name = "quickstart_etl"
 
-[tool.dagster]
-module_name = "quickstart_etl"
-
 [tool.dg]
 directory_type = "project"
 

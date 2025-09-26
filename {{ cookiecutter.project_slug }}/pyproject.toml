@@ -40,8 +40,6 @@ dev = { features = [
   "dagster-daemon",
   "dagster-basics",
   "dagster-scaffolding",
-  "notebookdev",
-
 ], solve-group = "default" }
 dagster-webserver = { features = [
   "dagster-webserver",

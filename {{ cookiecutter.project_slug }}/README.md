@@ -12,7 +12,7 @@ pixi update
 
 
 # launch a shell
-pixi shell --frozen -e ci-validation
+pixi shell --frozen -e dev
 cd src/code_location_{{ cookiecutter.project_slug }}/code_location_{{ cookiecutter.project_slug }}_dbt/ && dbt deps
 cd ../../../
 ```
@@ -23,11 +23,11 @@ set `DAGSTER_HOME` to have persistent logs
 
 ```bash
 # for a single code location
-pixi shell --frozen -e ci-validation
+pixi shell --frozen -e dev
 
 dagster dev
 # alternatively:
-pixi run -e ci-validation start-dev
+pixi run -e dev start-dev
 
 
 dagster job list --location foo

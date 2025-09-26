@@ -28,19 +28,7 @@ codelocation-{{ cookiecutter.project_slug_pixi }} = { features = [
   "dagster-basics",
   "shared",
 ], solve-group = "codelocation-{{ cookiecutter.project_slug_pixi }}" }
-ci-validation = { features = [
-  "ci-basics",
-  "codelocation-{{ cookiecutter.project_slug_pixi }}",
-  "codelocation-foo",
-  "shared-library",
-  "shared",
-  "dagster-webserver",
-  "notebookdev",
-  "dagster-daemon",
-  "dagster-basics",
-  "dagster-scaffolding",
 
-], solve-group = "default" }
 dev = { features = [
   "ci-basics",
   "codelocation-{{ cookiecutter.project_slug_pixi }}",
@@ -52,6 +40,7 @@ dev = { features = [
   "dagster-daemon",
   "dagster-basics",
   "dagster-scaffolding",
+  "notebookdev",
 
 ], solve-group = "default" }
 dagster-webserver = { features = [

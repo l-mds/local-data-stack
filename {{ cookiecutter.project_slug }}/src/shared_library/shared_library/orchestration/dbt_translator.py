@@ -15,7 +15,7 @@ from dagster_dbt import (
 
 
 def build_DbtTranslator(warehouse_name: str, dbt_target_schema: str):  # noqa: C901
-    class AsciiDbtTranslator(DagsterDbtTranslator):
+    class DbtTranslator(DagsterDbtTranslator):
         _partitioning_default_column_name = None
         _partitioning_overrides: Mapping[str, str] = {}
 
@@ -79,7 +79,7 @@ def build_DbtTranslator(warehouse_name: str, dbt_target_schema: str):  # noqa: C
 
             return {**default_metadata, **metadata}
 
-    return AsciiDbtTranslator
+    return DbtTranslator
 
 
 def generate_additional_metadata_for_output(

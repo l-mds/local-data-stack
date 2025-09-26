@@ -37,7 +37,10 @@ dbt_project = DbtProject(
 dbt_project.prepare_if_dev()
 
 RESOURCES_LOCAL = {
-    "dbt": dbt_project,
+    "dbt": DbtCliResource(
+                project_dir=dbt_project,
+                target="dev",
+            ),
     "ddb": DuckDBPathResource(
         file_path=str(
             Path(
@@ -50,7 +53,10 @@ RESOURCES_LOCAL = {
 }
 
 RESOURCES_PROD = {
-    "dbt": dbt_project,
+    "dbt": DbtCliResource(
+                project_dir=dbt_project,
+                target="prod",
+            ),
     "ddb": DuckDBPathResource(
         file_path=str(
             Path(

@@ -24,3 +24,13 @@ repository = "https://github.com/{{ cookiecutter.organization }}/{{ cookiecutter
 
 [tool.setuptools.packages.find]
 exclude = ["code_location_{{ cookiecutter.project_slug }}_tests"]
+
+[tool.dagster]
+module_name = "code_location_{{ cookiecutter.project_slug }}"
+
+[tool.dg]
+directory_type = "project"
+
+[tool.dg.project]
+root_module = "code_location_{{ cookiecutter.project_slug }}"
+registry_modules = ["code_location_{{ cookiecutter.project_slug }}.components.*"]

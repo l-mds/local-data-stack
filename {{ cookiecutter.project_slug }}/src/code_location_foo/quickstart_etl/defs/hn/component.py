@@ -10,7 +10,7 @@ def foo_op():
     return 5
 
 
-@dg.graph_asset
+@dg.graph_asset(automation_condition=dg.AutomationCondition.eager())
 def my_asset():
     return foo_op()
 
@@ -18,7 +18,7 @@ def my_asset():
 
 class HnComponent(dg.Component, dg.Model, dg.Resolvable):
     def build_defs(self, context: dg.ComponentLoadContext) -> dg.Definitions:
-        return dg.Definitions(jobs=[daily_refresh_schedule], assets=[my_asset()])
+        return dg.Definitions(schedules=[daily_refresh_schedule], assets=[my_asset],)
 
 
 @dg.component_instance

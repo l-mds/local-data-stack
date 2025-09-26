@@ -26,7 +26,7 @@ def get_env(deployment_key: str = "DAGSTER_DEPLOYMENT", default_value="dev"):
         f"Unknown environment: {os.environ.get(deployment_key, default_value)}"
     )
 
-DBT_PROJECT_DIR = file_relative_path(__file__, "../../code_location_{{ cookiecutter.project_slug }}_dbt")
+DBT_PROJECT_DIR = file_relative_path(__file__, "../../../../code_location_{{ cookiecutter.project_slug }}_dbt")
 dbt_project_path = Path(DBT_PROJECT_DIR)
 
 dbt_project = DbtProject(

@@ -1,20 +1,22 @@
-from pathlib import Path
+# ruff: noqa: E402
+import warnings
 
 import dagster as dg
+from dagster._utils import warnings as dagster_warnings
+
+warnings.filterwarnings("ignore", category=dagster_warnings.BetaWarning)
+warnings.filterwarnings("ignore", category=dagster_warnings.PreviewWarning)
+from pathlib import Path
 
 @dg.definitions
 def defs():
     root_dir = __file__
     base = dg.load_from_defs_folder(path_within_project=Path(root_dir).parent.parent)
-    assets_with_eager = dg.with_attributes(
-        base,
-        automation_condition=dg.AutomationCondition.eager()
-    )
 
-    materializable = [a for a in assets_with_eager.assets if isinstance(a, dg.AssetsDefinition)]  # type: ignore
+    materializable = [a for a in base.assets if isinstance(a, dg.AssetsDefinition)]  # type: ignore
     passthrough = [
         a
-        for a in assets_with_eager.assets  # type: ignore
+        for a in base.assets  # type: ignore
         if not isinstance(a, dg.AssetsDefinition)
     ]  # SourceAsset
 

@@ -1,0 +1,52 @@
+name: Validation of template
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'pyproject.toml'
+      - 'pixi.lock'
+      - 'projects/**'
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches: [ main ]
+    paths:
+      - 'pyproject.toml'
+      - 'pixi.lock'
+      - 'projects/**'
+  workflow_dispatch:
+
+concurrency:
+  group: tutorial-main-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validation:
+    name: Validate tutorial
+    runs-on: ubuntu-latest
+    env:
+      # dagster dbt needs to run in prepare_if_dev to parse the project
+      DAGSTER_IS_DEV_CLI: "True"
+      CATALOG_DB_USER: "dummy"
+      CATALOG_DB_PASSWORD: "dummy"
+      OBJECT_STORE_ROOT_USER: "dummy"
+      OBJECT_STORE_ROOT_PASSWORD: "dummy"
+      OBJECT_STORE_REGION: "dummy"
+      OPENAI_API_KEY: "dummy"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.9.0
+        with:
+          pixi-version: v0.55.0
+          cache: true
+          frozen: true
+      
+     # Create an instance of the template
+      - run: pixi run render-dev
+
+     # check the instance can start
+      - run: cd rendered-template/local_data_stack/ && pixi run -e dev test
+
+    # possibly add further testing later

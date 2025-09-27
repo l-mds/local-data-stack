@@ -3,7 +3,7 @@ name = "{{ cookiecutter.project_slug }}"
 version = "1.0.0"
 description = "{{ cookiecutter.project_name }}"
 authors = [{ name = "{{ cookiecutter.author }}", email = "{{ cookiecutter.author_email }}" }]
-requires-python = "== 3.12"
+requires-python = ">=3.12,<3.13"
 
 [tool.pixi.project]
 platforms = ["linux-64", "osx-arm64", "win-64", "linux-aarch64"]
@@ -28,18 +28,7 @@ codelocation-{{ cookiecutter.project_slug_pixi }} = { features = [
   "dagster-basics",
   "shared",
 ], solve-group = "codelocation-{{ cookiecutter.project_slug_pixi }}" }
-ci-validation = { features = [
-  "ci-basics",
-  "codelocation-{{ cookiecutter.project_slug_pixi }}",
-  "codelocation-foo",
-  "shared-library",
-  "shared",
-  "dagster-webserver",
-  "notebookdev",
-  "dagster-daemon",
-  "dagster-basics",
 
-], solve-group = "default" }
 dev = { features = [
   "ci-basics",
   "codelocation-{{ cookiecutter.project_slug_pixi }}",
@@ -50,7 +39,7 @@ dev = { features = [
   "dagster-webserver",
   "dagster-daemon",
   "dagster-basics",
-
+  "dagster-scaffolding",
 ], solve-group = "default" }
 dagster-webserver = { features = [
   "dagster-webserver",
@@ -60,6 +49,14 @@ dagster-daemon = { features = [
   "dagster-daemon",
   "dagster-basics",
 ], solve-group = "default" }
+
+[tool.pixi.feature.dagster-scaffolding.dependencies]
+yarn = "~=4.9.2"
+
+[tool.pixi.feature.dagster-scaffolding.pypi-dependencies]
+dagster-dg-cli = ">=1.11.10,<1.12"
+create-dagster = ">=1.11.10,<1.12"
+
 
 [tool.pixi.feature.ci-basics.dependencies]
 yamllint = ">=1.35.1,<2"
@@ -85,16 +82,16 @@ ipywidgets = "~=8.1.5"
 [tool.pixi.feature.dagster-basics.dependencies]
 
 [tool.pixi.feature.dagster-basics.pypi-dependencies]
-dagster = ">=1.9.11,<1.10"
-dagster-postgres = ">=0.25.11,<0.26"
-dagster-cloud = ">=1.9.11,<1.10"
+dagster = ">=1.11.11,<1.12"
+dagster-postgres = ">=0.27.11,<0.28"
+dagster-cloud = ">=1.11.11,<1.12"
 
 [tool.pixi.feature.dagster-daemon.pypi-dependencies]
-dagster-docker = ">=0.25.11,<0.26"
+dagster-docker = ">=0.27.11,<0.28"
 
 [tool.pixi.feature.dagster-webserver.pypi-dependencies]
-dagster-webserver = ">=1.9.11,<1.10"
-dagster-docker = ">=0.25.11,<0.26"
+dagster-webserver = ">=1.11.11,<1.12"
+dagster-docker = ">=0.27.11,<0.28"
 
 [tool.pixi.feature.shared-library.dependencies]
 [tool.pixi.feature.shared-library.pypi-dependencies]
@@ -117,10 +114,10 @@ quickstart_etl = { path = "./src/code_location_foo", editable = true }
 [tool.pixi.feature.codelocation-{{ cookiecutter.project_slug_pixi }}.pypi-dependencies]
 dbt-core = "~=1.9.2"
 dbt-duckdb = "~=1.9.1"
-dagster-dbt = ">=0.25.11,<0.26"
-dagster-duckdb = ">=0.25.11,<0.26"
-dagster-duckdb-polars = ">=0.25.11,<0.26"
-dagster-duckdb-pandas = ">=0.25.11,<0.26"
+dagster-dbt = ">=0.27.11,<0.28"
+dagster-duckdb = ">=0.27.11,<0.28"
+dagster-duckdb-polars = ">=0.27.11,<0.28"
+dagster-duckdb-pandas = ">=0.27.11,<0.28"
 code_location_{{ cookiecutter.project_slug }} = { path = "./src/code_location_{{ cookiecutter.project_slug }}", editable = true }
 
 [tool.pixi.feature.template.dependencies]

@@ -35,13 +35,13 @@ fmt-unsafe:
 .PHONY: lint
 ## Ruff based flake8 style linting plus type checking via pyright
 lint:
-	pixi run -e ci-validation lint
+	pixi run -e dev lint
 
 
 .PHONY: test
 ## Execute tests with coverage
 test:
-	pixi run -e ci-validation test
+	pixi run -e dev test
 
 
 

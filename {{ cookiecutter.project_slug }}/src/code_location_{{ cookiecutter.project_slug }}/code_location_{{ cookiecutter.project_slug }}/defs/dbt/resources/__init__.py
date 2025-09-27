@@ -5,38 +5,42 @@ from dagster_dbt import DbtCliResource, DbtProject
 from shared_library.orchestration.resources.utils import (
     get_dagster_deployment_environment,
 )
+import os
 
 from .duckdb_path import DuckDBPathResource
 
-DBT_PROJECT_DIR = file_relative_path(__file__, "../../code_location_{{ cookiecutter.project_slug }}_dbt")
-
-
-def get_dbt_project(target: str, DBT_PROJECT_DIR: str):
-    # dbt_project_path = Path(__file__).parent.parent.joinpath("dbt_project")
-    dbt_project = DbtProject(
-        project_dir=DBT_PROJECT_DIR,
-        # must sit externally i.e. on s3
-        # state_path="target/slim_ci",
-        target=target,
+def get_env(deployment_key: str = "DAGSTER_DEPLOYMENT", default_value="dev"):
+    if (
+        (os.getenv("DAGSTER_CLOUD_IS_BRANCH_DEPLOYMENT", "") == "1")
+        or (os.environ.get(deployment_key, default_value) == "dev")
+        or (os.environ.get(deployment_key, default_value) == "BRANCH")
+    ):
+        return "dev"
+    if (
+        (os.getenv("DAGSTER_CLOUD_DEPLOYMENT_NAME", "") == "prod")
+        or (os.environ.get(deployment_key, default_value) == "prod")
+        or (os.environ.get(deployment_key, default_value) == "PROD")
+    ):
+        return "prod"
+    raise ValueError(
+        f"Unknown environment: {os.environ.get(deployment_key, default_value)}"
     )
-    dbt_project.prepare_if_dev()
-    return dbt_project
 
+DBT_PROJECT_DIR = file_relative_path(__file__, "../../../../code_location_{{ cookiecutter.project_slug }}_dbt")
+dbt_project_path = Path(DBT_PROJECT_DIR)
 
-dbt_resource_dev = DbtCliResource(
-    project_dir=get_dbt_project(target="dev", DBT_PROJECT_DIR=DBT_PROJECT_DIR),
-    global_config_flags=["--no-use-colors"],
-    target="dev",
+dbt_project = DbtProject(
+    project_dir=dbt_project_path,
+    profiles_dir=dbt_project_path,
+    target=get_env(),
 )
-
-dbt_resource_prod = DbtCliResource(
-    project_dir=get_dbt_project(target="prod", DBT_PROJECT_DIR=DBT_PROJECT_DIR),
-    global_config_flags=["--no-use-colors"],
-    target="prod",
-)
+dbt_project.prepare_if_dev()
 
 RESOURCES_LOCAL = {
-    "dbt": dbt_resource_dev,
+    "dbt": DbtCliResource(
+                project_dir=dbt_project,
+                target="dev",
+            ),
     "ddb": DuckDBPathResource(
         file_path=str(
             Path(
@@ -49,7 +53,10 @@ RESOURCES_LOCAL = {
 }
 
 RESOURCES_PROD = {
-    "dbt": dbt_resource_prod,
+    "dbt": DbtCliResource(
+                project_dir=dbt_project,
+                target="prod",
+            ),
     "ddb": DuckDBPathResource(
         file_path=str(
             Path(

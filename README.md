@@ -30,6 +30,8 @@ Additionally included for secure handling of secrets:
 - sops
 - age
 
+![](img/ducking-the-lake.png)
+
 ## usage
 
 Prerequisites: 
@@ -75,3 +77,10 @@ Post install:
 
 - update the secrets in the `.env` files by executing: `openssl rand -base64 32` and setting a suitable secret
 - ensure the `.env.enc` can be created by following the instructions in [documentation/secops]
+
+## Developing the template
+
+To render an instance of the project:
+```bash
+pixi run render-dev
+```

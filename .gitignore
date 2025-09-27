@@ -1,3 +1,4 @@
 .pixi/envs/
 .pixi/solve-group-envs/
 local_data_stack
+key.txt

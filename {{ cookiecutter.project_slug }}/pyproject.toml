@@ -127,7 +127,7 @@ cruft = "~=2.16.0"
 jinja2-ospath = ">=0.3.0,<0.4.0"
 
 [tool.pixi.feature.secops.dependencies]
-go-sops = "~=3.9.4"
+go-sops = "~=3.11.0"
 age = "~=1.2.1"
 
 [tool.pixi.feature.secops.pypi-dependencies]

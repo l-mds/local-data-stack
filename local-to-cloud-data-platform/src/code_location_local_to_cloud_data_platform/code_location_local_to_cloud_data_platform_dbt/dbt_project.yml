@@ -1,0 +1,30 @@
+name: 'code_location_local_to_cloud_data_platform'
+version: '1.0.0'
+
+profile: 'code_location_local_to_cloud_data_platform'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+docs-paths: [models, docs]
+
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  +persist_docs:
+    relation: true
+    columns: true
+  code_location_local_to_cloud_data_platform:
+    # Config indicated by + and applies to all files under models/example/
+    example:
+      +materialized: view
+      #+schema: xyz
+
+  post-hook:
+    - "{{ create_latest_version_view() }}"
+

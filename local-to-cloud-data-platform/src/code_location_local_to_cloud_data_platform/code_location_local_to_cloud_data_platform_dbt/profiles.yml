@@ -1,0 +1,30 @@
+flags:
+  send_anonymous_usage_stats: False
+
+code_location_local_to_cloud_data_platform:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      schema: "{{ env_var('WAREHOUSE_SCHEMA', 'bar_dev') }}"
+      path: ./analytics_database_dev.duckdb
+      threads: 2
+      extensions:
+        - parquet
+        - httpfs
+        - aws
+      #settings:
+      #  s3_region: us-east-1
+      #secrets:
+      #  - type: s3
+      #    region: us-east-1
+      #    key_id: "{{ env_var('AWS_ACCESS_KEY_ID', 'dummy') }}"
+      #    secret: "{{ env_var('AWS_SECRET_ACCESS_KEY', 'dummy') }}"
+
+    prod:
+      type: duckdb
+      schema: "{{ env_var('WAREHOUSE_SCHEMA', 'bar') }}"
+      path: C:\Users\MSI\Desktop\local-to-cloud-data-platform\local-data-stack/local-to-cloud-data-platform-z_state/analytics/analytics_database_prod.duckdb
+      #external_root: /foo/the/bar
+      threads: 4
+

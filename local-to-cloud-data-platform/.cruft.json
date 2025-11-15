@@ -1,0 +1,26 @@
+{
+  "template": "https://github.com/l-mds/local-data-stack.git",
+  "commit": "cda07524f9e0c97a0ab7ccd438073e82116063b6",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "project_name": "local-to-cloud-data-platform",
+      "organization": "achraf",
+      "project_slug": "local-to-cloud-data-platform",
+      "project_slug_pixi": "local-to-cloud-data-platform",
+      "author": "achrafS133",
+      "author_email": "errahouti.2003.achraf@gmail.com",
+      "cloudflare_api_key": "<<your-secret-key>>",
+      "cloudflare_email": "<<your-e-mail>>",
+      "root_domain": "<<yourdomain.com>>",
+      "time_zone": "Europe/Vienna",
+      "state_path": "C:\\Users\\MSI\\Desktop\\local-to-cloud-data-platform\\local-data-stack/local-to-cloud-data-platform-z_state",
+      "_extensions": [
+        "jinja2_ospath.extensions.OSPathExtension"
+      ],
+      "_template": "https://github.com/l-mds/local-data-stack.git",
+      "_commit": "cda07524f9e0c97a0ab7ccd438073e82116063b6"
+    }
+  },
+  "directory": null
+}

@@ -1,0 +1,10 @@
+---
+load_from:
+  - grpc_server:
+      host: codelocation-local-to-cloud-data-platform
+      port: 4000
+      location_name: "local-to-cloud-data-platform"
+  - grpc_server:
+      host: codelocation-foo
+      port: 4000
+      location_name: "foo"

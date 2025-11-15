@@ -1,0 +1,33 @@
+[tool.dagster]
+module_name = "code_location_local_to_cloud_data_platform"
+
+[tool.isort]
+profile = "black"
+
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "code_location_local_to_cloud_data_platform"
+version = "1.0.0"
+description = "A sample code location with some python and dbt assets"
+authors = [{ name = "achrafS133", email = "errahouti.2003.achraf@gmail.com" }]
+license = { text = "UNLICENSED" }
+dependencies = ["dagster>=1.11.11,<1.13"]
+
+[project.optional-dependencies]
+dev = ["dagster-webserver>=1.11.11,<1.13", "pytest"]
+
+[project.urls]
+repository = "https://github.com/achrafS133/local-data-stack"
+
+[tool.setuptools.packages.find]
+exclude = ["code_location_local_to_cloud_data_platform_tests"]
+
+[tool.dg]
+directory_type = "project"
+
+[tool.dg.project]
+root_module = "code_location_local_to_cloud_data_platform"
+registry_modules = ["code_location_local_to_cloud_data_platform.components.*"]

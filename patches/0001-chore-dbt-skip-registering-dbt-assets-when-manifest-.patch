@@ -1,0 +1,198 @@
+From 72ce6f9023fad85324388e69c67336d2d7890281 Mon Sep 17 00:00:00 2001
+From: achrafS133 <errahouti.2003.achraf@gmail.com>
+Date: Sat, 15 Nov 2025 15:55:29 +0100
+Subject: [PATCH] chore(dbt): skip registering dbt assets when manifest
+ missing/invalid; relax dagster constraint to allow 1.12.x
+
+---
+ .../code_location_local_to_cloud_data_platform}/__init__.py       | 0
+ .../code_location_local_to_cloud_data_platform}/definitions.py    | 0
+ .../code_location_local_to_cloud_data_platform}/defs/__init__.py  | 0
+ .../defs/dbt/__init__.py                                          | 0
+ .../defs/dbt/component.py                                         | 0
+ .../defs/dbt/resources/__init__.py                                | 0
+ .../defs/dbt/resources/duckdb_path.py                             | 0
+ .../defs/dbt/resources/sql_asset_keys.py                          | 0
+ .../defs/logistics/__init__.py                                    | 0
+ .../defs/logistics/logistics_example.py                           | 0
+ .../code_location_local_to_cloud_data_platform_dbt}/.gitignore    | 0
+ .../code_location_local_to_cloud_data_platform_dbt}/.sqlfluff     | 0
+ .../.sqlfluffignore                                               | 0
+ .../code_location_local_to_cloud_data_platform_dbt}/README.md     | 0
+ .../analyses/.gitkeep                                             | 0
+ .../dbt_project.yml                                               | 0
+ .../macros/.gitkeep                                               | 0
+ .../macros/create_latest_version_view.sql                         | 0
+ .../models/example/__example_docs.md                              | 0
+ .../models/example/my_first_dbt_model.sql                         | 0
+ .../models/example/my_second_dbt_model.sql                        | 0
+ .../models/example/schema.yml                                     | 0
+ .../package-lock.yml                                              | 0
+ .../code_location_local_to_cloud_data_platform_dbt}/packages.yml  | 0
+ .../code_location_local_to_cloud_data_platform_dbt}/profiles.yml  | 0
+ .../seeds/.gitkeep                                                | 0
+ .../snapshots/.gitkeep                                            | 0
+ .../tests/.gitkeep                                                | 0
+ .../code_location_local_to_cloud_data_platform_tests}/__init__.py | 0
+ .../test_defs_load.py                                             | 0
+ .../pyproject.toml                                                | 0
+ 31 files changed, 0 insertions(+), 0 deletions(-)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform}/__init__.py (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform}/definitions.py (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform}/defs/__init__.py (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform}/defs/dbt/__init__.py (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform}/defs/dbt/component.py (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform}/defs/dbt/resources/__init__.py (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform}/defs/dbt/resources/duckdb_path.py (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform}/defs/dbt/resources/sql_asset_keys.py (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform}/defs/logistics/__init__.py (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform}/defs/logistics/logistics_example.py (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/.gitignore (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/.sqlfluff (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/.sqlfluffignore (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/README.md (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/analyses/.gitkeep (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/dbt_project.yml (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/macros/.gitkeep (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/macros/create_latest_version_view.sql (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/models/example/__example_docs.md (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/models/example/my_first_dbt_model.sql (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/models/example/my_second_dbt_model.sql (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/models/example/schema.yml (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/package-lock.yml (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/packages.yml (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/profiles.yml (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/seeds/.gitkeep (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/snapshots/.gitkeep (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt}/tests/.gitkeep (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_tests => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_tests}/__init__.py (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_tests => code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_tests}/test_defs_load.py (100%)
+ rename local-to-cloud-data-platform/src/{code_location_local-to-cloud-data-platform => code_location_local_to_cloud_data_platform}/pyproject.toml (100%)
+
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/__init__.py b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/__init__.py
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/__init__.py
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/__init__.py
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/definitions.py b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/definitions.py
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/definitions.py
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/definitions.py
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/__init__.py b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/__init__.py
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/__init__.py
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/__init__.py
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/dbt/__init__.py b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/dbt/__init__.py
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/dbt/__init__.py
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/dbt/__init__.py
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/dbt/component.py b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/dbt/component.py
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/dbt/component.py
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/dbt/component.py
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/dbt/resources/__init__.py b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/dbt/resources/__init__.py
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/dbt/resources/__init__.py
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/dbt/resources/__init__.py
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/dbt/resources/duckdb_path.py b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/dbt/resources/duckdb_path.py
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/dbt/resources/duckdb_path.py
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/dbt/resources/duckdb_path.py
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/dbt/resources/sql_asset_keys.py b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/dbt/resources/sql_asset_keys.py
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/dbt/resources/sql_asset_keys.py
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/dbt/resources/sql_asset_keys.py
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/logistics/__init__.py b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/logistics/__init__.py
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/logistics/__init__.py
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/logistics/__init__.py
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/logistics/logistics_example.py b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/logistics/logistics_example.py
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform/defs/logistics/logistics_example.py
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform/defs/logistics/logistics_example.py
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/.gitignore b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/.gitignore
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/.gitignore
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/.gitignore
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/.sqlfluff b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/.sqlfluff
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/.sqlfluff
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/.sqlfluff
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/.sqlfluffignore b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/.sqlfluffignore
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/.sqlfluffignore
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/.sqlfluffignore
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/README.md b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/README.md
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/README.md
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/README.md
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/analyses/.gitkeep b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/analyses/.gitkeep
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/analyses/.gitkeep
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/analyses/.gitkeep
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/dbt_project.yml b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/dbt_project.yml
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/dbt_project.yml
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/dbt_project.yml
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/macros/.gitkeep b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/macros/.gitkeep
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/macros/.gitkeep
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/macros/.gitkeep
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/macros/create_latest_version_view.sql b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/macros/create_latest_version_view.sql
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/macros/create_latest_version_view.sql
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/macros/create_latest_version_view.sql
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/models/example/__example_docs.md b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/models/example/__example_docs.md
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/models/example/__example_docs.md
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/models/example/__example_docs.md
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/models/example/my_first_dbt_model.sql b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/models/example/my_first_dbt_model.sql
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/models/example/my_first_dbt_model.sql
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/models/example/my_first_dbt_model.sql
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/models/example/my_second_dbt_model.sql b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/models/example/my_second_dbt_model.sql
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/models/example/my_second_dbt_model.sql
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/models/example/my_second_dbt_model.sql
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/models/example/schema.yml b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/models/example/schema.yml
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/models/example/schema.yml
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/models/example/schema.yml
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/package-lock.yml b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/package-lock.yml
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/package-lock.yml
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/package-lock.yml
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/packages.yml b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/packages.yml
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/packages.yml
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/packages.yml
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/profiles.yml b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/profiles.yml
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/profiles.yml
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/profiles.yml
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/seeds/.gitkeep b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/seeds/.gitkeep
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/seeds/.gitkeep
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/seeds/.gitkeep
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/snapshots/.gitkeep b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/snapshots/.gitkeep
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/snapshots/.gitkeep
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/snapshots/.gitkeep
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/tests/.gitkeep b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/tests/.gitkeep
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/tests/.gitkeep
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_dbt/tests/.gitkeep
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_tests/__init__.py b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_tests/__init__.py
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_tests/__init__.py
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_tests/__init__.py
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_tests/test_defs_load.py b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_tests/test_defs_load.py
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_tests/test_defs_load.py
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/code_location_local_to_cloud_data_platform_tests/test_defs_load.py
+diff --git a/local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/pyproject.toml b/local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/pyproject.toml
+similarity index 100%
+rename from local-to-cloud-data-platform/src/code_location_local-to-cloud-data-platform/pyproject.toml
+rename to local-to-cloud-data-platform/src/code_location_local_to_cloud_data_platform/pyproject.toml
+-- 
+2.51.0.windows.1
+

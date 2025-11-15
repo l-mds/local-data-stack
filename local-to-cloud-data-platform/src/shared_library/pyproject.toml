@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=72", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "shared_library"
+version = "1.0.0"
+description = "Example library"
+authors = [{ name = "achrafS133", email = "errahouti.2003.achraf@gmail.com" }]
+license = { text = "UNLICENSED" }
+dependencies = []
+
+[project.urls]
+repository = "https://github.com/achrafS133/local-data-stack"
+
+[tool.setuptools.packages.find]
+exclude = ["shared_library_tests"]
+

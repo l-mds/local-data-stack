@@ -45,7 +45,7 @@ Prerequisites:
 
 ```bash
 curl -fsSL https://pixi.sh/install.sh | bash
-git clone https://github.com/l-mds/local-data-stack.git
+git clone https://github.com/achrafS133/local-data-stack.git
 cd local-data-stack
 pixi run tpl-init-cruft
 

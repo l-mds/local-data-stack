@@ -1,0 +1,26 @@
+# rsync -avn . /dev/shm --exclude-from .dockerignore 
+.pixi/envs
+.pixi/solve-group-envs
+src/local-to-cloud-data-platform/code_location_local-to-cloud-data-platform_dbt/dbt_packages
+.dockerignore
+.env
+Dockerfile
+node_modules/
+z_state
+.dockerignore
+.env.enc
+.gitignore
+Dockerfile
+README.md
+docker-compose.yml
+.vscode/
+Makefile
+.pytest_cache/
+.ruff_cache/
+**/__pycache__/
+**/*.egg-info/
+**/.gitkeep
+**/.user.yml
+**/logs/
+**/target/
+**/*.duckdb
